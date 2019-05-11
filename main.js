@@ -54,7 +54,7 @@ function HTMLfruitProduct(con){
                     <p class="card-text">Price: ${FRUIT[con-1].price}.00</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" onclick="cart2('${FRUIT[con-1].name}','${FRUIT[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Buy</button>
+                            <button type="button" onclick="cart2('${FRUIT[con-1].name}','${FRUIT[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary"><a href="cart.html" style="color: inherit;">Buy</a></button>
                             <button id="${btn}" type="button" onclick="cart('${FRUIT[con-1].name}','${FRUIT[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Add to cart</button>
                         </div>
                         <small class="text-muted">Free shopping</small>
@@ -83,7 +83,7 @@ function HTMLjuiceProduct(con){
                     <p class="card-text">Price: ${JUICE[con-1].price}.00</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" onclick="cart2('${JUICE[con-1].name}','${JUICE[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Buy</button>
+                            <button type="button" onclick="cart2('${JUICE[con-1].name}','${JUICE[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary"><a href="cart.html" style="color: inherit;">Buy</a></button>
                             <button id="${btn}" type="button" onclick="cart('${JUICE[con-1].name}','${JUICE[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Add to cart</button>
                         </div>
                         <small class="text-muted">Free shopping</small>
@@ -112,7 +112,7 @@ function HTMLsaladProduct(con){
                     <p class="card-text">Price: ${SALAD[con-1].price}.00</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" onclick="cart2('${SALAD[con-1].name}','${SALAD[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Buy</button>
+                            <button type="button" onclick="cart2('${SALAD[con-1].name}','${SALAD[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary"><a href="cart.html" style="color: inherit;">Buy</a></button>
                             <button id="${btn}" type="button" onclick="cart('${SALAD[con-1].name}','${SALAD[con-1].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary">Add to cart</button>
                         </div>
                         <small class="text-muted">Free shopping</small>
@@ -123,17 +123,31 @@ function HTMLsaladProduct(con){
     `
 }
 //ANIMATION
+// function animation() {
+//     const toast=swal.mixin({
+//       toast:true,
+//       position:'top-end',
+//       showConfirmButton:false,
+//       timer:1000
+//     });
+//     toast({
+//       type:'success',
+//       title: 'Added to shopping cart'
+//     });
+//   }
 function animation(){
-    const toast=swal.mixin({
+    Swal.fire({
         toast:true,
-        position:'top-end',
-        showConfirmButton:false,
-        timer:1000
-    });
-    toast({
+        position: 'top-end',
         type: 'success',
-        title: 'Added to shopping cart'
-    });
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      toast({
+          type: 'seccess',
+          title: 'Added to shoping cart'
+      });
 }
 //CART FUNCTIONS
 function cart(name, price, url, con, btncart){
@@ -149,11 +163,36 @@ function cart(name, price, url, con, btncart){
             localStorage.setItem("cart", JSON.stringify(products));
     } else {
         products = JSON.parse(localStorage.getItem("cart"));
-        cart_n.innerHTML = `[${products.length}]`;
-        document.getElementById(btncart).style.display="none";
-        animation();
+        products.push(item);
+        localStorage.setItem("cart", JSON.stringify(products));
     }
+    products = JSON.parse(localStorage.getItem("cart"));
+    cart_n.innerHTML = `[${products.length}]`;
+    document.getElementById(btncart).style.display="none";
+    animation();
 }
+function cart2(name, price, url, con, btncart){
+    var item={
+        name:name,
+        price:price,
+        url:url
+    }
+    cartItems.push(item);
+    let storage= JSON.parse(localStorage.getItem("cart"));
+    if (storage==null) {
+        products.push(item);
+        localStorage.setItem("cart", JSON.stringify(products));
+    } else {
+        products = JSON.parse(localStorage.getItem("cart"));
+        products.push(item);
+        localStorage.setItem("cart", JSON.stringify(products));
+    }
+    products= JSON.parse(localStorage.getItem("cart"));
+    cart_n.innerHTML=`[${products.length}]`;
+    document.getElementById(btncart).style.display="none";
+
+}
+
 //RENDER
 function render(){
     for (let index = 1; index <= 6; index++){
